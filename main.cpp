@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+// COMSC 210 | Lab 22 | Ian Kusmiantoro
+
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
 
 class DoublyLinkedList {
@@ -99,6 +101,48 @@ public:
 
         delete temp;
     }
+
+    // delete_pos() - deletes the node at position pos from head of the linked list
+    // parameters - int pos - position of the node to be deleted
+    // returns - void
+    void delete_pos(int pos) {
+        Node* current = head;
+        // Traverse to node n at pos
+        for (int i = 0; i < pos && head; i++) {
+            current = current->next;
+        }
+        // If node doesn't exist
+        if (!current) {
+            return;
+        }
+        // Deleting head
+        if (current->prev == head) {
+            head = current->next;
+        } else {
+            current->prev->next = current->next;
+        }
+        // Deleting tail
+        if (current->next == tail) {
+            tail = current->prev;
+        } else {
+            current->next->prev = current->prev;
+        }
+
+        delete current;
+    }
+
+    void pop_front() {
+        // Position 0 belongs to the head pointer
+        // Thus position 1 belongs to the first node
+        delete_pos(1);
+    }
+
+    void pop_back() {
+        Node* current = tail;
+        tail = current->prev;
+        delete current;
+    }
+    
 
     void print() {
         Node* current = head;
