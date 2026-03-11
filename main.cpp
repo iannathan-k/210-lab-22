@@ -78,7 +78,7 @@ public:
         temp->next = newNode;
     }
 
-    void delete_node(int value) {
+    void delete_val(int value) {
         if (!head) return; // Empty list
 
         Node* temp = head;
@@ -108,7 +108,7 @@ public:
     void delete_pos(int pos) {
         Node* current = head;
         // Traverse to node n at pos
-        for (int i = 0; i < pos && head; i++) {
+        for (int i = 0; i < pos && current; i++) {
             current = current->next;
         }
         // If node doesn't exist
@@ -116,28 +116,35 @@ public:
             return;
         }
         // Deleting head
-        if (current->prev == head) {
-            head = current->next;
-        } else {
+        if (current->prev) {
             current->prev->next = current->next;
+        } else {
+            head = current->next;
         }
         // Deleting tail
-        if (current->next == tail) {
-            tail = current->prev;
-        } else {
+        if (current->next) {
             current->next->prev = current->prev;
+        } else {
+            tail = current->prev;
         }
 
         delete current;
     }
 
     void pop_front() {
-        // Position 0 belongs to the head pointer
-        // Thus position 1 belongs to the first node
-        delete_pos(1);
+        if (!head) {
+            return;
+        }
+        // Was just gonna do pop_front(1), but nevermind we want class completeness
+        Node* current = head;
+        head = current->next;
+        delete current;
     }
 
     void pop_back() {
+        if (!head) {
+            return;
+        }
         Node* current = tail;
         tail = current->prev;
         delete current;
@@ -185,6 +192,18 @@ int main() {
 
     cout << "List backward: ";
     list.print_reverse();
+
+    cout << "Deleting the first element: ";
+    list.pop_front();
+    list.print();
+
+    cout << "Deleting the last element: ";
+    list.pop_back();
+    list.print();
+
+    cout << "Deleting element 3: ";
+    list.delete_pos(3);
+    list.print(); 
 
     cout << "Deleting list, then trying to print.\n";
     list.~DoublyLinkedList();
