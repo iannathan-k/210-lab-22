@@ -120,12 +120,18 @@ public:
             current->prev->next = current->next;
         } else {
             head = current->next;
+            if (head) {
+                head->prev = nullptr; // In case size is 1
+            }
         }
         // Deleting tail
         if (current->next) {
             current->next->prev = current->prev;
         } else {
             tail = current->prev;
+            if (tail) {
+                tail->next = nullptr; // In case size is 1
+            }
         }
 
         delete current;
@@ -135,18 +141,32 @@ public:
         if (!head) {
             return;
         }
+        if (head == tail) { // In case size is 1
+            tail->next = nullptr;
+        }
+
         // Was just gonna do pop_front(1), but nevermind we want class completeness
         Node* current = head;
         head = current->next;
+        if (head) {
+            head->prev = nullptr;
+        }
+        
         delete current;
     }
 
     void pop_back() {
-        if (!head) {
+        if (!tail) {
             return;
+        }
+        if (tail == head) { // In case size is 1
+            tail->next = nullptr;
         }
         Node* current = tail;
         tail = current->prev;
+        if (tail) {
+            tail->next = nullptr;
+        }
         delete current;
     }
     
