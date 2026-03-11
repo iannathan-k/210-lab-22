@@ -122,6 +122,8 @@ public:
             head = current->next;
             if (head) {
                 head->prev = nullptr; // In case size is 1
+                // I know this isn't covered in the lesson, but it's still an important
+                // case to consider, because we got to try to break our code.
             }
         }
         // Deleting tail
@@ -141,17 +143,15 @@ public:
         if (!head) {
             return;
         }
-        if (head == tail) { // In case size is 1
-            tail->next = nullptr;
-        }
-
-        // Was just gonna do pop_front(1), but nevermind we want class completeness
         Node* current = head;
-        head = current->next;
-        if (head) {
+        if (head == tail) { // In case size is 1
+            head = tail = nullptr;
+        } else {
+            // Was just gonna do pop_front(1), but nevermind we want class completeness
+            head = current->next;
             head->prev = nullptr;
         }
-        
+
         delete current;
     }
 
@@ -159,14 +159,14 @@ public:
         if (!tail) {
             return;
         }
-        if (tail == head) { // In case size is 1
-            tail->next = nullptr;
-        }
         Node* current = tail;
-        tail = current->prev;
-        if (tail) {
+        if (tail == head) { // In case size is 1
+            head = tail = nullptr;
+        } else {
+            tail = current->prev;
             tail->next = nullptr;
         }
+        
         delete current;
     }
     
